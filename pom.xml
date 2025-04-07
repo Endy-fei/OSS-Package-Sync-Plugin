@@ -4,18 +4,19 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.myconjure.oss.sync</groupId>
+    <groupId>com.myconjure</groupId>
     <artifactId>oss-package-sync-plugin</artifactId>
     <version>1.0.0</version>
     <packaging>maven-plugin</packaging>
+    <url>https://github.com/Endy-fei/OSS-Package-Sync-Plugin</url>
 
     <name>OSS Package Sync Plugin</name>
     <description>Maven plugin to upload JAR to OSS</description>
 
     <scm>
-        <url>https://github.com/yourname/oss-package-sync-plugin</url>
-        <connection>scm:git:https://github.com/yourname/oss-package-sync-plugin.git</connection>
-        <developerConnection>scm:git:git@github.com:yourname/oss-package-sync-plugin.git</developerConnection>
+        <url>https://github.com/Endy-fei/OSS-Package-Sync-Plugin</url>
+        <connection>scm:git:https://github.com/Endy-fei/OSS-Package-Sync-Plugin.git</connection>
+        <developerConnection>scm:git:git@github.com:Endy-fei/OSS-Package-Sync-Plugin.git</developerConnection>
     </scm>
 
     <developers>
@@ -87,8 +88,81 @@
     </dependencies>
 
 
+
+
+    <!-- 插件配置 -->
     <build>
         <plugins>
+            <plugin>
+                <groupId>org.sonatype.central</groupId>
+                <artifactId>central-publishing-maven-plugin</artifactId>
+                <version>0.7.0</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <publishingServerId>maven-central</publishingServerId>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-plugin-plugin</artifactId>
+                <version>3.13.1</version>
+                <configuration>
+                    <goalPrefix>oss-sync</goalPrefix>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>descriptor</id>
+                        <goals>
+                            <goal>descriptor</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- GPG 签名插件 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
+                <version>1.5</version>
+                <executions>
+                    <execution>
+                        <id>sign-artifacts</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>sign</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- 源码和 Javadoc 插件 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>2.2.1</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>2.9.1</version>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
 </project>
